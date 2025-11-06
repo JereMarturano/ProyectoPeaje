@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using TollSystem.Application.Services;
 using TollSystem.Domain.Entities;
 using TollSystem.Domain.Repositories;
+using TollSystem.Domain.ValueObjects;
 using Xunit;
 
 namespace TollSystem.Application.Tests
@@ -14,7 +15,7 @@ namespace TollSystem.Application.Tests
         {
             // Arrange
             var tollPassageRepositoryMock = new Mock<ITollPassageRepository>();
-            var vehicle = new Vehicle("ABC-123", "Red", 2);
+            var vehicle = new Vehicle(new LicensePlate("AA 123 BB"), "Red", 2);
             var tollPassage = new TollPassage(vehicle);
             tollPassageRepositoryMock.Setup(repo => repo.AddAsync(It.IsAny<TollPassage>())).ReturnsAsync(tollPassage);
 
