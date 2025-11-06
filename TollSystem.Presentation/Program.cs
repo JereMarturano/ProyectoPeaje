@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using TollSystem.Application.Interfaces;
 using TollSystem.Application.Services;
+using TollSystem.Domain.Exceptions;
 using TollSystem.Domain.Repositories;
 using TollSystem.Infrastructure.Data;
 using TollSystem.Infrastructure.Repositories;
@@ -27,19 +28,34 @@ namespace TollSystem.Presentation
                 var tollPassageService = services.GetRequiredService<ITollPassageService>();
                 var vehicleService = services.GetRequiredService<IVehicleService>();
 
-                Console.WriteLine("Enter license plate:");
-                var licensePlate = Console.ReadLine();
+                try
+                {
+                    Console.WriteLine("Enter license plate:");
+                    var licensePlate = Console.ReadLine();
 
-                Console.WriteLine("Enter vehicle color:");
-                var color = Console.ReadLine();
+                    Console.WriteLine("Enter vehicle color:");
+                    var color = Console.ReadLine();
 
-                Console.WriteLine("Enter number of axles:");
-                var axles = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter number of axles:");
+                    var axles = int.Parse(Console.ReadLine());
 
-                var vehicle = await vehicleService.GetOrCreateVehicleAsync(licensePlate, color, axles);
-                var tollPassage = await tollPassageService.CreateTollPassageAsync(vehicle);
+                    var vehicle = await vehicleService.GetOrCreateVehicleAsync(licensePlate, color, axles);
+                    var tollPassage = await tollPassageService.CreateTollPassageAsync(vehicle);
 
-                Console.WriteLine($"Toll passage created with ID: {tollPassage.Id}");
+                    Console.WriteLine($"Toll passage created with ID: {tollPassage.Id}");
+                }
+                catch (InvalidLicensePlateFormatException ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Error: {ex.Message}");
+                    Console.ResetColor();
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                    Console.ResetColor();
+                }
             }
         }
 

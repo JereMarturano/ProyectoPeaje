@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TollSystem.Domain.Entities;
+using TollSystem.Domain.ValueObjects;
 
 namespace TollSystem.Infrastructure.Data
 {
@@ -18,7 +19,12 @@ namespace TollSystem.Infrastructure.Data
             modelBuilder.Entity<Vehicle>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.LicensePlate).IsRequired().HasMaxLength(10);
+                entity.Property(e => e.LicensePlate)
+                    .HasConversion(
+                        v => v.Value,
+                        v => new LicensePlate(v))
+                    .IsRequired()
+                    .HasMaxLength(10);
                 entity.Property(e => e.Color).HasMaxLength(50);
                 entity.Property(e => e.Axles).IsRequired();
             });
