@@ -5,6 +5,6 @@ namespace TollSystem.Application.Interfaces
 {
     public interface IVehicleService
     {
-        Task<Vehicle> GetOrCreateVehicleAsync(string licensePlate, string color, int axles);
+        Task<Vehicle> GetOrCreateVehicleAsync(string licensePlate, string color, int axles, decimal height, bool hasDualWheels);
     }
 }

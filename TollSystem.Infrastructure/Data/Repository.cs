@@ -8,9 +8,9 @@ namespace TollSystem.Infrastructure.Data
 {
     public class Repository<T> : IRepository<T> where T : Entity
     {
-        protected readonly DbContext _context;
+        protected readonly ApplicationDbContext _context;
 
-        public Repository(DbContext context)
+        public Repository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -28,20 +28,17 @@ namespace TollSystem.Infrastructure.Data
         public async Task<T> AddAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public async Task UpdateAsync(T entity)
+        public void Update(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(T entity)
+        public void Remove(T entity)
         {
             _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
         }
     }
 }

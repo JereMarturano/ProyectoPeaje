@@ -8,22 +8,26 @@ namespace TollSystem.Application.Services
 {
     public class VehicleService : IVehicleService
     {
-        private readonly IVehicleRepository _vehicleRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public VehicleService(IVehicleRepository vehicleRepository)
+        public VehicleService(IUnitOfWork unitOfWork)
         {
-            _vehicleRepository = vehicleRepository;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<Vehicle> GetOrCreateVehicleAsync(string licensePlate, string color, int axles)
+        public async Task<Vehicle> GetOrCreateVehicleAsync(string licensePlate, string color, int axles, decimal height, bool hasDualWheels)
         {
-            // The validation is now handled by the LicensePlate value object
             var validatedPlate = new LicensePlate(licensePlate);
 
-            // This is a simplified implementation. In a real-world scenario, you would
-            // probably want to query the vehicle by license plate first.
-            var vehicle = new Vehicle(validatedPlate, color, axles);
-            return await _vehicleRepository.AddAsync(vehicle);
+            var vehicle = await _unitOfWork.Vehicles.GetByLicensePlateAsync(validatedPlate);
+
+            if (vehicle == null)
+            {
+                vehicle = new Vehicle(validatedPlate, color, axles, height, hasDualWheels);
+                await _unitOfWork.Vehicles.AddAsync(vehicle);
+            }
+
+            return vehicle;
         }
     }
 }
