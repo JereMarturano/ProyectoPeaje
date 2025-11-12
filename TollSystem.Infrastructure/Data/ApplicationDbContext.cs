@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TollSystem.Domain.Entities;
 using TollSystem.Domain.ValueObjects;
+using TollSystem.Domain.Enums; 
 
 namespace TollSystem.Infrastructure.Data
 {
@@ -48,6 +49,17 @@ namespace TollSystem.Infrastructure.Data
                 entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
                 entity.Property(e => e.VehicleCategory);
             });
+
+           
+            modelBuilder.Entity<Tariff>().HasData(
+                new { Id = 1, VehicleCategory = VehicleCategory.Moto, Price = 600m },
+                new { Id = 2, VehicleCategory = VehicleCategory.Auto, Price = 2000m },
+                new { Id = 3, VehicleCategory = VehicleCategory.CamionPesado2Ejes, Price = 4000m },
+                new { Id = 4, VehicleCategory = VehicleCategory.Camion3a4Ejes, Price = 11700m },
+                new { Id = 5, VehicleCategory = VehicleCategory.Camion5a6Ejes, Price = 15600m },
+                new { Id = 6, VehicleCategory = VehicleCategory.CamionMas6Ejes, Price = 19500m }
+            );
+            
         }
     }
 }

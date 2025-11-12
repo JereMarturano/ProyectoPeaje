@@ -5,12 +5,20 @@ using TollSystem.Application.Interfaces;
 using TollSystem.Application.Services;
 using TollSystem.Domain.Repositories;
 using TollSystem.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore; // Este 'using' es necesario
+using TollSystem.Infrastructure.Data;  // Este 'using' es necesario
 
 public class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        // --- AÑADE ESTE BLOQUE ANTES DE LOS OTROS SERVICIOS ---
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); // <-- AÑADE ESTA LÍNEA
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>                   // <-- AÑADE ESTA LÍNEA
+            options.UseSqlServer(connectionString));                                    // <-- AÑADE ESTA LÍNEA
+        // ----------------------------------------------------
 
         // Add services to the container.
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

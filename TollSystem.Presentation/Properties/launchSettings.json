@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "TollSystem.Presentation": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger", 
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:59097;http://localhost:59098"
+    }
+  }
+}

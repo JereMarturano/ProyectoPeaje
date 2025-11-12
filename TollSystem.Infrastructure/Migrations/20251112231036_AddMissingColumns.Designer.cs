@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TollSystem.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using TollSystem.Infrastructure.Data;
 namespace TollSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251112231036_AddMissingColumns")]
+    partial class AddMissingColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,44 +42,6 @@ namespace TollSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tariffs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Price = 600m,
-                            VehicleCategory = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Price = 2000m,
-                            VehicleCategory = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Price = 4000m,
-                            VehicleCategory = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Price = 11700m,
-                            VehicleCategory = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Price = 15600m,
-                            VehicleCategory = 5
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Price = 19500m,
-                            VehicleCategory = 6
-                        });
                 });
 
             modelBuilder.Entity("TollSystem.Domain.Entities.TollPassage", b =>
