@@ -5,8 +5,9 @@ using TollSystem.Application.Interfaces;
 using TollSystem.Application.Services;
 using TollSystem.Domain.Repositories;
 using TollSystem.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore; // Este 'using' es necesario
-using TollSystem.Infrastructure.Data;  // Este 'using' es necesario
+using Microsoft.EntityFrameworkCore;
+using TollSystem.Infrastructure.Data;
+
 
 public class Program
 {
@@ -14,13 +15,10 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // --- AÑADE ESTE BLOQUE ANTES DE LOS OTROS SERVICIOS ---
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); // <-- AÑADE ESTA LÍNEA
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>                   // <-- AÑADE ESTA LÍNEA
-            options.UseSqlServer(connectionString));                                    // <-- AÑADE ESTA LÍNEA
-        // ----------------------------------------------------
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); 
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>                   
+            options.UseSqlServer(connectionString));                                    
 
-        // Add services to the container.
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
         builder.Services.AddScoped<ITollPassageRepository, TollPassageRepository>();
@@ -31,13 +29,12 @@ public class Program
         builder.Services.AddScoped<ITollQueryService, TollQueryService>();
 
         builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
